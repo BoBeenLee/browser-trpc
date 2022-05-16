@@ -1,2 +1,3 @@
 export * from './router';
-// export * from './adapters/pm';
+export { Subscription } from '@trpc/server';
+export * from './adapters/pm';

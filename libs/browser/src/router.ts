@@ -22,7 +22,7 @@ import type {
   DataTransformerOptions,
 } from '@trpc/server/src/transformer';
 import type { Prefixer, ThenArg, flatten } from '@trpc/server/src/types';
-import type { MiddlewareFunction } from './internals/middlewares';
+import type { MiddlewareFunction } from '@trpc/server/src/internals/middlewares';
 import { Procedure, createProcedure } from './internals/procedure';
 
 /**

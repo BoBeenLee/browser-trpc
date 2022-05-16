@@ -7,7 +7,10 @@ import type {
   ProcedureResolver,
 } from '@trpc/server/src/internals/procedure';
 import { getErrorFromUnknown } from './errors';
-import { MiddlewareFunction, middlewareMarker } from './middlewares';
+import {
+  MiddlewareFunction,
+  middlewareMarker
+} from '@trpc/server/src/internals/middlewares';
 import { wrapCallSafe } from './wrapCallSafe';
 
 interface ProcedureOptions<TContext, TMeta, TInput, TOutput, TParsedOutput> {
@@ -63,7 +66,7 @@ export class Procedure<
   TOutput,
   TParsedOutput,
   TFinalOutput = unknown extends TParsedOutput ? TOutput : TParsedOutput,
-> {
+  > {
   private middlewares: Readonly<Array<MiddlewareFunction<any, any, any>>>;
   private resolver: ProcedureResolver<TContext, TParsedInput, TOutput>;
   private readonly inputParser: ProcedureParser<TParsedInput>;
@@ -187,7 +190,7 @@ export class Procedure<
     middlewares: MiddlewareFunction<TInputContext, TContext, TMeta>[],
   ): this {
     const Constructor: {
-      new (
+      new(
         opts: ProcedureOptions<
           TContext,
           TMeta,
@@ -225,15 +228,15 @@ export function createProcedure<
   TParsedInput,
   TOutput,
   TParsedOutput,
->(
-  opts: CreateProcedureOptions<
-    TContext,
-    TMeta,
-    TInput,
-    TParsedInput,
-    TOutput,
-    TParsedOutput
-  >,
+  >(
+    opts: CreateProcedureOptions<
+      TContext,
+      TMeta,
+      TInput,
+      TParsedInput,
+      TOutput,
+      TParsedOutput
+    >,
 ): Procedure<
   unknown,
   TContext,
@@ -247,14 +250,14 @@ export function createProcedure<
     'input' in opts
       ? opts.input
       : (input: unknown) => {
-          if (input != null) {
-            throw new TRPCError({
-              code: 'BAD_REQUEST',
-              message: 'No input expected',
-            });
-          }
-          return undefined;
-        };
+        if (input != null) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'No input expected',
+          });
+        }
+        return undefined;
+      };
 
   const outputParser =
     'output' in opts && opts.output
