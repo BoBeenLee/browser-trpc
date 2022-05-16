@@ -1,6 +1,6 @@
 {
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/examples/browser",
+  "sourceRoot": "apps/examples/browser-nextjs",
   "projectType": "application",
   "targets": {
     "build": {
@@ -8,8 +8,8 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "root": "apps/examples/browser",
-        "outputPath": "dist/apps/examples/browser"
+        "root": "apps/examples/browser-nextjs",
+        "outputPath": "dist/apps/examples/browser-nextjs"
       },
       "configurations": {
         "development": {},
@@ -20,16 +20,16 @@
       "executor": "@nrwl/next:server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "examples-browser:build",
+        "buildTarget": "examples-browser-nextjs:build",
         "dev": true
       },
       "configurations": {
         "development": {
-          "buildTarget": "examples-browser:build:development",
+          "buildTarget": "examples-browser-nextjs:build:development",
           "dev": true
         },
         "production": {
-          "buildTarget": "examples-browser:build:production",
+          "buildTarget": "examples-browser-nextjs:build:production",
           "dev": false
         }
       }
@@ -37,14 +37,14 @@
     "export": {
       "executor": "@nrwl/next:export",
       "options": {
-        "buildTarget": "examples-browser:build:production"
+        "buildTarget": "examples-browser-nextjs:build:production"
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/examples/browser"],
+      "outputs": ["coverage/apps/examples/browser-nextjs"],
       "options": {
-        "jestConfig": "apps/examples/browser/jest.config.ts",
+        "jestConfig": "apps/examples/browser-nextjs/jest.config.ts",
         "passWithNoTests": true
       }
     },
@@ -52,7 +52,9 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/examples/browser/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "apps/examples/browser-nextjs/**/*.{ts,tsx,js,jsx}"
+        ]
       }
     }
   },

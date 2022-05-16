@@ -44,5 +44,5 @@
       }
     }
   },
-  "defaultProject": "examples-client"
+  "defaultProject": "examples-browser-nextjs"
 }
