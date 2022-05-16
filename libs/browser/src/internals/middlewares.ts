@@ -1,4 +1,4 @@
-import { TRPCError } from '../TRPCError';
+import { TRPCError } from '@trpc/server';
 import { ProcedureType } from '../router';
 
 export const middlewareMarker = Symbol('middlewareMarker');

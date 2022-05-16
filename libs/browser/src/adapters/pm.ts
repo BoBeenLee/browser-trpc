@@ -5,17 +5,17 @@ import {
   Subscription,
   TRPCError,
   inferRouterContext,
-} from '..';
-import type { BaseHandlerOptions } from '../internals/BaseHandlerOptions';
-import { callProcedure } from '../internals/callProcedure';
-import { getErrorFromUnknown } from '../internals/errors';
-import { transformTRPCResponse } from '../internals/transformTRPCResponse';
+} from '@trpc/server';
 import type {
   TRPCClientIncomingRequest,
   TRPCErrorResponse,
   TRPCRequest,
   TRPCResponse,
-} from '../rpc';
+} from '@trpc/server/rpc';
+import type { BaseHandlerOptions } from '@trpc/server/dist/declarations/src/internals/BaseHandlerOptions';
+import { callProcedure } from '../internals/callProcedure';
+import { getErrorFromUnknown } from '../internals/errors';
+import { transformTRPCResponse } from '../internals/transformTRPCResponse';
 
 interface MessageEvent<T = any> extends Event {
   /**

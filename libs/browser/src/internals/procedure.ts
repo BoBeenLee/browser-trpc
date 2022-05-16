@@ -1,45 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TRPCError } from '../TRPCError';
-import { ProcedureType } from '../router';
+import { TRPCError } from '@trpc/server';
+import type {
+  CreateProcedureOptions,
+  ProcedureCallOptions,
+  ProcedureParser,
+  ProcedureResolver,
+} from '@trpc/server/src/internals/procedure';
 import { getErrorFromUnknown } from './errors';
 import { MiddlewareFunction, middlewareMarker } from './middlewares';
 import { wrapCallSafe } from './wrapCallSafe';
-
-export type ProcedureParserZodEsque<TInput, TOutput> = {
-  _input: TInput;
-  _output: TOutput;
-};
-
-export type ProcedureParserMyZodEsque<T> = {
-  parse: (input: any) => T;
-};
-
-export type ProcedureParserSuperstructEsque<T> = {
-  create: (input: unknown) => T;
-};
-
-export type ProcedureParserCustomValidatorEsque<T> = (
-  input: unknown,
-) => T | Promise<T>;
-
-export type ProcedureParserYupEsque<T> = {
-  validateSync: (input: unknown) => T;
-};
-
-export type ProcedureParserWithInputOutput<TInput, TOutput> =
-  ProcedureParserZodEsque<TInput, TOutput>;
-
-export type ProcedureParser<T> =
-  | ProcedureParserYupEsque<T>
-  | ProcedureParserSuperstructEsque<T>
-  | ProcedureParserCustomValidatorEsque<T>
-  | ProcedureParserMyZodEsque<T>;
-
-export type ProcedureResolver<TContext, TInput, TOutput> = (opts: {
-  ctx: TContext;
-  input: TInput;
-  type: ProcedureType;
-}) => Promise<TOutput> | TOutput;
 
 interface ProcedureOptions<TContext, TMeta, TInput, TOutput, TParsedOutput> {
   middlewares: Array<MiddlewareFunction<any, any, any>>;
@@ -47,16 +16,6 @@ interface ProcedureOptions<TContext, TMeta, TInput, TOutput, TParsedOutput> {
   inputParser: ProcedureParser<TInput>;
   outputParser: ProcedureParser<TParsedOutput>;
   meta: TMeta;
-}
-
-/**
- * @internal
- */
-export interface ProcedureCallOptions<TContext> {
-  ctx: TContext;
-  rawInput: unknown;
-  path: string;
-  type: ProcedureType;
 }
 
 type ParseFn<T> = (value: unknown) => T | Promise<T>;
@@ -259,59 +218,6 @@ export class Procedure<
   }
 }
 
-export type CreateProcedureWithInput<TContext, TMeta, TInput, TOutput> = {
-  input: ProcedureParser<TInput>;
-  output?: ProcedureParser<TOutput>;
-  meta?: TMeta;
-  resolve: ProcedureResolver<TContext, TInput, TOutput>;
-};
-
-export type CreateProcedureWithInputOutputParser<
-  TContext,
-  TMeta,
-  TInput,
-  TParsedInput,
-  TOutput,
-  TParsedOutput,
-> = {
-  input: ProcedureParserWithInputOutput<TInput, TParsedInput>;
-  output?: ProcedureParserWithInputOutput<TOutput, TParsedOutput>;
-  meta?: TMeta;
-  resolve: ProcedureResolver<TContext, TParsedInput, TOutput>;
-};
-
-export type CreateProcedureWithoutInput<
-  TContext,
-  TMeta,
-  TOutput,
-  TParsedOutput,
-> = {
-  output?:
-    | ProcedureParserWithInputOutput<TOutput, TParsedOutput>
-    | ProcedureParser<TOutput>;
-  meta?: TMeta;
-  resolve: ProcedureResolver<TContext, undefined, TOutput>;
-};
-
-export type CreateProcedureOptions<
-  TContext,
-  TMeta = undefined,
-  TInput = undefined,
-  TParsedInput = undefined,
-  TOutput = undefined,
-  TParsedOutput = undefined,
-> =
-  | CreateProcedureWithInputOutputParser<
-      TContext,
-      TMeta,
-      TInput,
-      TParsedInput,
-      TOutput,
-      TParsedOutput
-    >
-  | CreateProcedureWithInput<TContext, TMeta, TInput, TOutput>
-  | CreateProcedureWithoutInput<TContext, TMeta, TOutput, TParsedOutput>;
-
 export function createProcedure<
   TContext,
   TMeta,
@@ -363,25 +269,3 @@ export function createProcedure<
     meta: opts.meta as any,
   });
 }
-
-export type inferProcedureFromOptions<
-  TInputContext,
-  TOptions extends CreateProcedureOptions<any, any, any, any, any, any>,
-> = TOptions extends CreateProcedureOptions<
-  infer TContext,
-  infer TMeta,
-  infer TInput,
-  infer TParsedInput,
-  infer TOutput,
-  infer TParsedOutput
->
-  ? Procedure<
-      TInputContext,
-      TContext,
-      TMeta,
-      unknown extends TInput ? undefined : TInput,
-      unknown extends TParsedInput ? undefined : TParsedInput,
-      TOutput,
-      TParsedOutput
-    >
-  : never;
