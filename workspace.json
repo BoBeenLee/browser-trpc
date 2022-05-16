@@ -3,6 +3,10 @@
   "version": 2,
   "projects": {
     "browser": "libs/browser",
+    "examples-browser": "apps/examples/browser",
+    "examples-browser-e2e": "apps/examples/browser-e2e",
+    "examples-client": "apps/examples/client",
+    "examples-client-e2e": "apps/examples/client-e2e",
     "links": "libs/links"
   }
 }
