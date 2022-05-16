@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@browser-trpc/browser": ["libs/browser/src/index.ts"]
+      "@browser-trpc/browser": ["libs/browser/src/index.ts"],
+      "@browser-trpc/links": ["libs/links/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
